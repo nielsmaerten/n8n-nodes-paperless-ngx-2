@@ -1,7 +1,6 @@
-import axios from 'axios';
-import process from 'node:process';
 import { z } from 'zod';
-import { getMap, paperlessTagSchema } from './utils';
+import { createPaperlessAxiosInstance, getMap, paperlessTagSchema } from './utils';
+import axios from 'axios';
 
 const resultSchema = z.object({
   documents: z.array(
@@ -36,18 +35,13 @@ const paperlessDocumentsResponseSchema = z.object({
 });
 
 export async function getDocumentsByTag(tags: string[], limit = 10) {
-  const paperlessUrl = process.env.PAPERLESS_NGX_URL;
-  const paperlessToken = process.env.PAPERLESS_NGX_TOKEN;
-
-  if (!paperlessUrl || !paperlessToken) {
-    throw new Error('PAPERLESS_NGX_URL and PAPERLESS_NGX_TOKEN must be set');
-  }
+  const paperlessAxios = createPaperlessAxiosInstance();
 
   try {
     // To filter by tag name, we first need to get the tag IDs.
     const allTagsMap = await getMap(
-      `${paperlessUrl}/api/tags/`,
-      paperlessToken,
+      paperlessAxios,
+      `/api/tags/`,
       z.array(paperlessTagSchema),
     );
     const tagNameToIdMap = new Map(
@@ -68,13 +62,13 @@ export async function getDocumentsByTag(tags: string[], limit = 10) {
 
     const [correspondentMap] = await Promise.all([
       getMap(
-        `${paperlessUrl}/api/correspondents/`,
-        paperlessToken,
+        paperlessAxios,
+        `/api/correspondents/`,
         z.array(paperlessCorrespondentSchema),
       ),
     ]);
 
-    const url = `${paperlessUrl}/api/documents/`;
+    const url = `/api/documents/`;
     const params: { page_size: number; tags__id__all?: string } = {
       page_size: limit,
     };
@@ -82,10 +76,7 @@ export async function getDocumentsByTag(tags: string[], limit = 10) {
       params.tags__id__all = tagIds.join(',');
     }
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Token ${paperlessToken}`,
-      },
+    const response = await paperlessAxios.get(url, {
       params,
     });
 

@@ -1,7 +1,6 @@
-import axios from 'axios';
-import process from 'node:process';
 import { z } from 'zod';
-import { getMap, paperlessTagSchema } from './utils';
+import { createPaperlessAxiosInstance, getMap, paperlessTagSchema } from './utils';
+import axios from 'axios';
 
 const paperlessDocumentSchema = z.object({
   id: z.number(),
@@ -25,17 +24,12 @@ type UpdateData = {
 };
 
 export async function updateDocument(documentId: number, data: UpdateData) {
-  const paperlessUrl = process.env.PAPERLESS_NGX_URL;
-  const paperlessToken = process.env.PAPERLESS_NGX_TOKEN;
-
-  if (!paperlessUrl || !paperlessToken) {
-    throw new Error('PAPERLESS_NGX_URL and PAPERLESS_NGX_TOKEN must be set');
-  }
+  const paperlessAxios = createPaperlessAxiosInstance();
 
   try {
     const allTagsMap = await getMap(
-      `${paperlessUrl}/api/tags/`,
-      paperlessToken,
+      paperlessAxios,
+      `/api/tags/`,
       z.array(paperlessTagSchema),
     );
     const tagNameToIdMap = new Map(
@@ -45,10 +39,8 @@ export async function updateDocument(documentId: number, data: UpdateData) {
       ][],
     );
 
-    const docUrl = `${paperlessUrl}/api/documents/${documentId}/`;
-    const currentDocResponse = await axios.get(docUrl, {
-      headers: { Authorization: `Token ${paperlessToken}` },
-    });
+    const docUrl = `/api/documents/${documentId}/`;
+    const currentDocResponse = await paperlessAxios.get(docUrl);
     const currentDoc = paperlessDocumentSchema.parse(currentDocResponse.data);
 
     const updatePayload: { title?: string; tags?: number[] } = {};
@@ -80,9 +72,8 @@ export async function updateDocument(documentId: number, data: UpdateData) {
 
     updatePayload.tags = Array.from(finalTagIds);
 
-    const response = await axios.patch(docUrl, updatePayload, {
+    const response = await paperlessAxios.patch(docUrl, updatePayload, {
       headers: {
-        Authorization: `Token ${paperlessToken}`,
         'Content-Type': 'application/json',
       },
     });
@@ -90,8 +81,8 @@ export async function updateDocument(documentId: number, data: UpdateData) {
     const updatedDoc = paperlessDocumentSchema.parse(response.data);
 
     const correspondentMap = await getMap(
-      `${paperlessUrl}/api/correspondents/`,
-      paperlessToken,
+      paperlessAxios,
+      `/api/correspondents/`,
       z.array(z.object({ id: z.number(), name: z.string() })),
     );
 

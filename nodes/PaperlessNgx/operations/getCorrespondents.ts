@@ -1,6 +1,5 @@
-import axios from 'axios';
-import process from 'node:process';
 import { z } from 'zod';
+import { createPaperlessAxiosInstance } from './utils';
 
 const paperlessCorrespondentSchema = z.object({
   id: z.number(),
@@ -20,21 +19,12 @@ const paperlessCorrespondentsResponseSchema = z.object({
 });
 
 export async function getCorrespondents() {
-  const paperlessUrl = process.env.PAPERLESS_NGX_URL;
-  const paperlessToken = process.env.PAPERLESS_NGX_TOKEN;
-
-  if (!paperlessUrl || !paperlessToken) {
-    throw new Error('PAPERLESS_NGX_URL and PAPERLESS_NGX_TOKEN must be set');
-  }
+  const paperlessAxios = createPaperlessAxiosInstance();
 
   try {
-    const url = `${paperlessUrl}/api/correspondents/`;
+    const url = `/api/correspondents/`;
 
-    const response = await axios.get(url, {
-      headers: {
-        Authorization: `Token ${paperlessToken}`,
-      },
-    });
+    const response = await paperlessAxios.get(url);
 
     const validatedResponse = paperlessCorrespondentsResponseSchema.parse(response.data);
 
