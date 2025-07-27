@@ -8,7 +8,7 @@ This node allows you to automate your document workflows by connecting Paperless
 
 ## Features
 
-*   **Get Documents**: Retrieve a list of documents from your Paperless-ngx instance. You can filter by tags (comma-separated) and limit the number of results.
+*   **Get Documents**: Retrieve a list of documents from your Paperless-ngx instance. Optionally filtered by tag(s).
 *   **Update Document**: Update a document's title, add tags, or remove tags.
 
 ## Prerequisites
@@ -22,7 +22,7 @@ This node allows you to automate your document workflows by connecting Paperless
 2.  Click **Install** and enter `n8n-nodes-paperless-ngx`.
 3.  Click **Install** again to confirm.
 
-## Configuration
+## Getting started
 
 To use this node, you'll need to create a new credential for your Paperless-ngx instance.
 
@@ -31,64 +31,11 @@ To use this node, you'll need to create a new credential for your Paperless-ngx 
 3.  Enter your Paperless-ngx URL and API key.
 4.  Click **Save**.
 
-## Usage
-
-Once you've configured your credentials, you can use the Paperless-ngx node in your workflows.
-
-1.  Add the **Paperless-ngx** node to your workflow.
-2.  Select the operation you want to perform (e.g., **Get Documents** or **Update Document**).
-3.  Configure the node's parameters.
-    *   For **Get Documents**, you can specify tags (comma-separated) and a limit.
-    *   For **Update Document**, you need to provide the Document ID and can optionally provide a new title, tags to add, and tags to remove.
-4.  Connect the node to other nodes in your workflow to build your automation.
-
 ## Contributing
 
 Contributions to this project are welcome! Please feel free to open an issue or submit a pull request on our [GitHub repository](https://github.com/nielsmaerten/n8n-nodes-paperless-ngx).
 
-## Development
 
-### Testing
-
-This project uses [Vitest](https://vitest.dev/) for unit testing. The test suite includes integration tests that make real HTTP requests to a Paperless-ngx instance.
-
-#### Environment Variables
-
-The tests require access to a real Paperless-ngx instance. Set the following environment variables:
-
-*   `PAPERLESS_URL`: The URL of your Paperless-ngx instance (defaults to `http://localhost:8000`)
-*   `PAPERLESS_TOKEN`: Your Paperless-ngx API token (defaults to `test-token`)
-
-#### Running Tests
-
-```bash
-# Run tests in watch mode
-npm test
-
-# Run tests once
-npm run test:run
-
-# Run tests with custom Paperless instance
-PAPERLESS_URL=http://your-paperless-instance.com PAPERLESS_TOKEN=your-api-token npm run test:run
-```
-
-**Note**: The integration tests will make real API calls to your Paperless-ngx instance. They primarily test with non-existent tag names to avoid affecting your actual data, but ensure you're comfortable with tests running against your instance.
-
-#### Test Structure
-
-*   **Integration Tests**: Located in `nodes/PaperlessNgx/operations/`
-*   Tests validate API communication, error handling, and parameter processing
-*   No mocks are used - tests make real HTTP requests to verify functionality
-
-#### Building
-
-```bash
-# Build the project
-npm run build
-
-# Build and watch for changes
-npm run dev
-```
 
 ## License
 
