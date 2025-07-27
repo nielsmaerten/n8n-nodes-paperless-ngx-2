@@ -4,6 +4,11 @@ import { z } from 'zod';
 export const paperlessTagSchema = z.object({
   id: z.number(),
   name: z.string(),
+  slug: z.string(),
+  color: z.string(),
+  text_color: z.string(),
+  is_inbox_tag: z.boolean(),
+  document_count: z.number(),
 });
 
 export async function getMap(
