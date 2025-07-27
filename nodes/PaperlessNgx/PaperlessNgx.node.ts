@@ -5,7 +5,7 @@ import type {
   INodeTypeDescription,
 } from 'n8n-workflow';
 import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
-import { getTags, getDocumentsByTag, updateDocument } from './operations';
+import { getTags, getDocumentsByTag, updateDocument, getCorrespondents } from './operations';
 
 export class PaperlessNgx implements INodeType {
   description: INodeTypeDescription = {
@@ -33,6 +33,11 @@ export class PaperlessNgx implements INodeType {
         type: 'options',
         noDataExpression: true,
         options: [
+          {
+            name: 'Get Correspondents',
+            value: 'getCorrespondents',
+            action: 'Get all correspondents',
+          },
           {
             name: 'Get Documents',
             value: 'getDocuments',
@@ -142,41 +147,48 @@ export class PaperlessNgx implements INodeType {
 
     for (let i = 0; i < items.length; i++) {
       try {
-        if (operation === 'getDocuments') {
-          const tagsStr = this.getNodeParameter('tag', i, '') as string;
-          const tags = tagsStr ? tagsStr.split(',').map((tag) => tag.trim()) : [];
-          const limit = this.getNodeParameter('limit', i, 50) as number;
-          const result = await getDocumentsByTag(tags, limit);
-          returnData = result.documents.map((doc) => ({ json: doc }));
-        } else if (operation === 'getTags') {
-          const result = await getTags();
-          returnData = result.tags.map((tag) => ({ json: tag }));
-        } else if (operation === 'updateDocument') {
-          const documentId = this.getNodeParameter('documentId', i, 0) as number;
-          const title = this.getNodeParameter('title', i, '') as string;
-          const addTagsStr = this.getNodeParameter('addTags', i, '') as string;
-          const removeTagsStr = this.getNodeParameter('removeTags', i, '') as string;
-
-          const updateData: {
-            title?: string;
-            tags?: string[];
-            removeTags?: string[];
-          } = {};
-
-          if (title) {
-            updateData.title = title;
+        switch (operation) {
+          case 'getDocuments': {
+            const tagsStr = this.getNodeParameter('tag', i, '') as string;
+            const tags = tagsStr ? tagsStr.split(',').map((tag) => tag.trim()) : [];
+            const limit = this.getNodeParameter('limit', i, 50) as number;
+            const result = await getDocumentsByTag(tags, limit);
+            returnData = result.documents.map((doc) => ({ json: doc }));
+            break;
           }
-
-          if (addTagsStr) {
-            updateData.tags = addTagsStr.split(',').map((tag) => tag.trim());
+          case 'getTags': {
+            const result = await getTags();
+            returnData = result.tags.map((tag) => ({ json: tag }));
+            break;
           }
-
-          if (removeTagsStr) {
-            updateData.removeTags = removeTagsStr.split(',').map((tag) => tag.trim());
+          case 'getCorrespondents': {
+            const result = await getCorrespondents();
+            returnData = result.correspondents.map((correspondent) => ({ json: correspondent }));
+            break;
           }
+          case 'updateDocument': {
+            const documentId = this.getNodeParameter('documentId', i, 0) as number;
+            const title = this.getNodeParameter('title', i, '') as string;
+            const addTagsStr = this.getNodeParameter('addTags', i, '') as string;
+            const removeTagsStr = this.getNodeParameter('removeTags', i, '') as string;
 
-          const updatedDocument = await updateDocument(documentId, updateData);
-          returnData.push({ json: updatedDocument });
+            const updateData: {
+              title?: string;
+              tags?: string[];
+              removeTags?: string[];
+            } = {};
+
+            if (title) updateData.title = title;
+            if (addTagsStr) updateData.tags = addTagsStr.split(',').map((tag) => tag.trim());
+            if (removeTagsStr) updateData.removeTags = removeTagsStr.split(',').map((tag) => tag.trim());
+
+            const updatedDocument = await updateDocument(documentId, updateData);
+            returnData.push({ json: updatedDocument });
+            break;
+          }
+          default: {
+            throw new NodeOperationError(this.getNode(), `The operation "${operation}" is not supported.`);
+          }
         }
       } catch (error) {
         if (this.continueOnFail()) {
