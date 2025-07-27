@@ -54,7 +54,7 @@ The following features are currently planned. If you want to contribute, these a
   - [ ] a document's correspondent
   - [x] a document's title
   - [x] a document's tags
-- [ ] List
+- [x] List
   - [x] tags
   - [x] correspondents
   - [x] documents (by tag)
