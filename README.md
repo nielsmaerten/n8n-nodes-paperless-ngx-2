@@ -40,7 +40,15 @@ You're ready to start automating!
 
 ## 🤝 Contributing
 
-Your contributions are welcome! Submit ideas or improvements via [GitHub Issues or Pull Requests](https://github.com/nielsmaerten/n8n-nodes-paperless-ngx).
+Your contributions are welcome! Submit ideas or improvements via [GitHub Issues or Pull Requests](https://github.com/nielsmaerten/n8n-nodes-paperless-ngx).  
+
+### 🛣️ Roadmap
+
+The following features are currently planned. If you want to contribute, these are a good place to start. Make sure to read [CONTRIBUTORS.md](CONTRIBUTORS.md) to understand the project's structure.
+
+- [ ] Uploading a new document
+- [ ] Modifying a document's correspondent
+
 
 ## 📄 License
 
