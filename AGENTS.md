@@ -10,7 +10,9 @@ The project is organized into the following main directories:
     -   `PaperlessNgx/`: The main directory for the Paperless NGX node.
         -   `PaperlessNgx.node.ts`: The main file for the node, defining its properties and execution logic.
         -   `operations/`: Contains the functions that interact with the Paperless NGX API.
+            -   `getCorrespondents.ts`: Implements the logic for retrieving all correspondents.
             -   `getDocumentsByTag.ts`: Implements the logic for retrieving documents by tag.
+            -   `getTags.ts`: Implements the logic for retrieving all tags.
             -   `updateDocument.ts`: Implements the logic for updating a document.
         -   `credentials/`: Contains the credentials for the Paperless NGX API.
         -   `tests/`: Contains the tests for the node.

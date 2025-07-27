@@ -1,42 +1,47 @@
-# n8n-nodes-paperless-ngx
+# n8n Node for Paperless-ngx
 
-![Screenshot](./screenshot.png)
+An n8n community node to automate your Paperless-ngx workflows, simplifying document management and integration with your favorite apps and services.
 
-This is an n8n community node package for [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx), an open-source document management system that transforms your physical documents into a searchable online archive.
+## 📌 Features
 
-This node allows you to automate your document workflows by connecting Paperless-ngx with other applications and services in your n8n workflows.
+* **Get Documents**: List documents, filterable by tag.
+* **Get Tags**: List all tags in your Paperless-ngx.
+* **Get Correspondents**: List all correspondents.
+* **Update Documents**: Change document titles, add/remove tags.
 
-## Features
+## 🚀 Quick Start
 
-*   **Get Documents**: Retrieve a list of documents from your Paperless-ngx instance. Optionally filtered by tag(s).
-*   **Update Document**: Update a document's title, add tags, or remove tags.
+### Prerequisites
 
-## Prerequisites
+* An [n8n](https://n8n.io) instance.
+* A [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) instance.
 
-*   An n8n instance.
-*   A Paperless-ngx instance.
+### Installation
 
-## Installation
+1. Open n8n, navigate to **Settings > Community Nodes**.
+2. Click **Install**, search for `n8n-nodes-paperless-ngx`.
+3. Select and confirm installation.
 
-1.  Go to **Settings > Community Nodes** in your n8n instance.
-2.  Click **Install** and enter `n8n-nodes-paperless-ngx`.
-3.  Click **Install** again to confirm.
+### Setup Credentials
 
-## Getting started
+1. Navigate to **Credentials > New**.
+2. Search and select **Paperless-ngx**.
+3. Enter your Paperless-ngx URL and API key.
+4. Click **Save**.
 
-To use this node, you'll need to create a new credential for your Paperless-ngx instance.
+You're ready to start automating!
 
-1.  Go to **Credentials > New** in your n8n instance.
-2.  Search for **Paperless-ngx** and select it.
-3.  Enter your Paperless-ngx URL and API key.
-4.  Click **Save**.
+## 🎯 Example Workflow Ideas
 
-## Contributing
+* Automatically tag and title incoming documents based on their content or using an [AI agent](https://n8n.io/ai/).
+* Index newly added documents into [Qdrant](https://qdrant.tech/).
+* Sync correspondents and tags with your CRM or task manager.
+* Trigger notifications or alerts based on document tags.
 
-Contributions to this project are welcome! Please feel free to open an issue or submit a pull request on our [GitHub repository](https://github.com/nielsmaerten/n8n-nodes-paperless-ngx).
+## 🤝 Contributing
 
+Your contributions are welcome! Submit ideas or improvements via [GitHub Issues or Pull Requests](https://github.com/nielsmaerten/n8n-nodes-paperless-ngx).
 
+## 📄 License
 
-## License
-
-This project is licensed under the [MIT License](LICENSE.md).
+[MIT License](LICENSE.md).
