@@ -25,11 +25,16 @@
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json",
     "test": "vitest run"
   },
   "files": [
-    "dist"
+    "dist",
+    "nodes",
+    "credentials",
+    "LICENSE.md",
+    "README.md"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
