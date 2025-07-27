@@ -46,8 +46,18 @@ Your contributions are welcome! Submit ideas or improvements via [GitHub Issues 
 
 The following features are currently planned. If you want to contribute, these are a good place to start. Make sure to read [CONTRIBUTORS.md](CONTRIBUTORS.md) to understand the project's structure.
 
-- [ ] Uploading a new document
-- [ ] Modifying a document's correspondent
+- [ ] Create
+  - [ ] a new document
+  - [ ] a new tag
+  - [ ] a new correspondent
+- [ ] Modify
+  - [ ] a document's correspondent
+  - [x] a document's title
+  - [x] a document's tags
+- [ ] List
+  - [x] tags
+  - [x] correspondents
+  - [x] documents (by tag)
 
 
 ## 📄 License
