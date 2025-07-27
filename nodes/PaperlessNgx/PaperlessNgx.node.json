@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-base.paperlessNgx",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Document Management"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://paperless-ngx.readthedocs.io/en/latest/api.html#authentication"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://paperless-ngx.readthedocs.io/en/latest/api.html"
+			}
+		]
+	}
+}
