@@ -5,8 +5,7 @@ import type {
   INodeTypeDescription,
 } from 'n8n-workflow';
 import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
-import { getDocumentsByTag } from './operations/getDocumentsByTag';
-import { updateDocument } from './operations/updateDocument';
+import { getTags, getDocumentsByTag, updateDocument } from './operations';
 
 export class PaperlessNgx implements INodeType {
   description: INodeTypeDescription = {
@@ -38,6 +37,11 @@ export class PaperlessNgx implements INodeType {
             name: 'Get Documents',
             value: 'getDocuments',
             action: 'Get documents',
+          },
+          {
+            name: 'Get Tags',
+            value: 'getTags',
+            action: 'Get all tags',
           },
           {
             name: 'Update Document',
@@ -144,6 +148,9 @@ export class PaperlessNgx implements INodeType {
           const limit = this.getNodeParameter('limit', i, 50) as number;
           const result = await getDocumentsByTag(tags, limit);
           returnData = result.documents.map((doc) => ({ json: doc }));
+        } else if (operation === 'getTags') {
+          const result = await getTags();
+          returnData = result.tags.map((tag) => ({ json: tag }));
         } else if (operation === 'updateDocument') {
           const documentId = this.getNodeParameter('documentId', i, 0) as number;
           const title = this.getNodeParameter('title', i, '') as string;
