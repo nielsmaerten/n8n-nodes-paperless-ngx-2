@@ -1,5 +1,7 @@
 # n8n-nodes-paperless-ngx
 
+![Screenshot](./screenshot.png)
+
 This is an n8n community node package for [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx), an open-source document management system that transforms your physical documents into a searchable online archive.
 
 This node allows you to automate your document workflows by connecting Paperless-ngx with other applications and services in your n8n workflows.
