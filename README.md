@@ -2,6 +2,8 @@
 
 An n8n community node to automate your Paperless-ngx workflows, simplifying document management and integration with your favorite apps and services.
 
+![Screenshot](./screenshot.png)
+
 ## 📌 Features
 
 * **Get Documents**: List documents, filterable by tag.
