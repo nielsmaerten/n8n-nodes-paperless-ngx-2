@@ -74,7 +74,7 @@ export async function updateDocument(documentId: number, data: UpdateData) {
     updatePayload.tags = Array.from(finalTagIds);
 
     // Handle correspondent: set by name, create if it doesn't exist
-    if (data.hasOwnProperty('correspondent')) {
+    if (data.hasOwnProperty('correspondent') && data.correspondent !== '') {
       if (data.correspondent === null) {
         // Setting correspondent to null removes the current correspondent
         updatePayload.correspondent = null;

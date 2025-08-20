@@ -132,6 +132,18 @@ export class PaperlessNgx implements INodeType {
           },
         },
       },
+      {
+        displayName: 'Set Correspondent',
+        name: 'correspondent',
+        type: 'string',
+        default: '',
+        description: 'Set the document correspondent by name. If it does not exist, it will be created.',
+        displayOptions: {
+          show: {
+            operation: ['updateDocument'],
+          },
+        },
+      },
     ],
   };
 
@@ -171,16 +183,19 @@ export class PaperlessNgx implements INodeType {
             const title = this.getNodeParameter('title', i, '') as string;
             const addTagsStr = this.getNodeParameter('addTags', i, '') as string;
             const removeTagsStr = this.getNodeParameter('removeTags', i, '') as string;
+            const correspondent = this.getNodeParameter('correspondent', i, '') as string;
 
             const updateData: {
               title?: string;
               tags?: string[];
               removeTags?: string[];
+              correspondent?: string;
             } = {};
 
             if (title) updateData.title = title;
             if (addTagsStr) updateData.tags = addTagsStr.split(',').map((tag) => tag.trim());
             if (removeTagsStr) updateData.removeTags = removeTagsStr.split(',').map((tag) => tag.trim());
+            if (correspondent) updateData.correspondent = correspondent.trim();
 
             const updatedDocument = await updateDocument(documentId, updateData);
             returnData.push({ json: updatedDocument });
