@@ -51,4 +51,19 @@ describe('updateDocument', () => {
       }),
     );
   });
+
+  it('should set a document correspondent', async () => {
+    const documentId = TEST_DOCUMENT_ID;
+    const newCorrespondent = 'John Doe';
+
+    // If the correspondent does not yet exist, it is created automatically
+    const result = await updateDocument(documentId, { correspondent: newCorrespondent });
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        id: documentId,
+        correspondent: newCorrespondent,
+      }),
+    );
+  });
 });

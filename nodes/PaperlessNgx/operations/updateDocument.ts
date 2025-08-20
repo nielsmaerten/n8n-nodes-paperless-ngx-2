@@ -21,6 +21,7 @@ type UpdateData = {
   title?: string;
   tags?: string[];
   removeTags?: string[];
+  correspondent?: string | null;
 };
 
 export async function updateDocument(documentId: number, data: UpdateData) {
@@ -43,7 +44,7 @@ export async function updateDocument(documentId: number, data: UpdateData) {
     const currentDocResponse = await paperlessAxios.get(docUrl);
     const currentDoc = paperlessDocumentSchema.parse(currentDocResponse.data);
 
-    const updatePayload: { title?: string; tags?: number[] } = {};
+    const updatePayload: { title?: string; tags?: number[]; correspondent?: number | null } = {};
 
     if (data.title) {
       updatePayload.title = data.title;
@@ -71,6 +72,41 @@ export async function updateDocument(documentId: number, data: UpdateData) {
     }
 
     updatePayload.tags = Array.from(finalTagIds);
+
+    // Handle correspondent: set by name, create if it doesn't exist
+    if (data.hasOwnProperty('correspondent')) {
+      if (data.correspondent === null) {
+        // Setting correspondent to null removes the current correspondent
+        updatePayload.correspondent = null;
+      } else if (typeof data.correspondent === 'string') {
+        // Fetch all correspondents from Paperless
+        const allCorrespondents = await getMap(
+          paperlessAxios,
+          `/api/correspondents/`,
+          z.array(z.object({ id: z.number(), name: z.string() })),
+        );
+
+        // Find the id of the given correspondent using case-insensitive search
+        let correspondentId = undefined;
+        for (const correspondent of allCorrespondents) {
+          if (correspondent[1].toLowerCase().trim() === data.correspondent.toLowerCase().trim()) {
+            correspondentId = correspondent[0];
+            break;
+          }
+        }
+
+        if (correspondentId === undefined) {
+          // Create the correspondent if it does not exist yet
+          const createResp = await paperlessAxios.post(`/api/correspondents/`, {
+            name: data.correspondent,
+          });
+          const created = z.object({ id: z.number() }).parse(createResp.data);
+          correspondentId = created.id;
+        }
+
+        updatePayload.correspondent = correspondentId;
+      }
+    }
 
     const response = await paperlessAxios.patch(docUrl, updatePayload, {
       headers: {
